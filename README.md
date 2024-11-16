@@ -55,10 +55,12 @@ For more production-grade runs that are very similar to nanoGPT, I recommend loo
 
 MIT
 
-## Setup on runpod
+## Setup and train on Runpod
 
-* Create a runpod account
-* Create network storage
+### Setup Runpod network storage
+
+* This is to persist your data and weights even when you're not paying for a running GPU pos 
+* Create network storage, you'll need around 100GB
 
 ### Run locally
 
@@ -68,6 +70,41 @@ e.g. mine was `runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04`
 
 You can run the exact same docker image as a container locally:
 
-`docker run --rm -it -v $(pwd):/workspace runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04 bash`
+```shell
+docker run --rm -it \
+-v "$(pwd):/workspace" \
+runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04 \
+bash
+```
 
 This way you can play around with same environment for free without paying for expensive GPU time until actually needed. You can setup scripts, etc to speed things up for real traning runs.
+
+### Setup dependendcies (10-20mins?)
+
+Startup pod with your network storage, SSH into it then run the following:
+
+```shell
+scripts/setup-venv.sh # setup python venv
+source .venv/bin/activate # activate venv
+pip install -r requirements.txt # install requirements
+```
+
+### Get training and validation datasets (40-50 mins?)
+
+Startup pod with your network storage, SSH into it then run the following:
+
+```shell
+source .venv/bin/activate # activate venv (unless you already have)
+python hellaswag.py # get hellaswag eval dataset
+python fineweb.py # get fineweb training dataset ()
+```
+
+### Train (? hours)
+
+Start up pod with network storage and as many GPUs as deep your pockets are.
+Set nproc_per_node to number of GPUs
+
+```shell
+source .venv/bin/activate # activate venv (unless you already have)
+torchrun --standalone --nproc_per_node=2 train_gpt2.py
+```
