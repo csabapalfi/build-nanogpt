@@ -57,10 +57,29 @@ MIT
 
 ## Setup and train on Runpod
 
-### Setup Runpod network storage
+### Runpod overview
+
+* You can a run a docker container in a specific region and get access to GPUs
+* Each region has different kind of GPUs
+* H100s seem to work well but they're the most expensive
+* You have to pay for a GPU while doing prep-work not utlizing GPUs (since CPU pods can't attach network storage - see below why we need that)
+
+### Runpod network storage
 
 * This is to persist your data and weights even when you're not paying for a running GPU pos 
-* Create network storage, you'll need around 100GB
+* Network storage is specific to a region
+* Check what is GPU availabilty like in the region before creating a network region in it
+* You'll need around 100GB
+* Network storage is mounted at `/workspace`
+
+### Create and run a pod
+
+* Create a pod
+* Make sure to attach your network storage
+* Choose a GPU and count (for non-training prep work 1 is enough)
+* Start pod, SSH into the pod and run commands (keep data in `/workspace`)
+* Terminate pod to not pay when not using it
+* Starting a new pod with the same network storage should keep your data (python venv and deps, training and eval data)
 
 ### Run locally
 
