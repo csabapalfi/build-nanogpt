@@ -54,3 +54,20 @@ For more production-grade runs that are very similar to nanoGPT, I recommend loo
 ## License
 
 MIT
+
+## Setup on runpod
+
+* Create a runpod account
+* Create network storage
+
+### Run locally
+
+Grab the docker iamge name from your runpod template:
+
+e.g. mine was `runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04`
+
+You can run the exact same docker image as a container locally:
+
+`docker run --rm -it -v $(pwd):/workspace runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04 bash`
+
+This way you can play around with same environment for free without paying for expensive GPU time until actually needed. You can setup scripts, etc to speed things up for real traning runs.

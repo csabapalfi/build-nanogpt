@@ -1,0 +1,7 @@
+torch
+numpy
+tiktoken
+datasets # fineweb
+transformers # hellaswag
+requests # hellaswag
+tqdm # fineweb and hellaswag
