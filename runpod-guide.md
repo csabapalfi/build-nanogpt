@@ -71,6 +71,11 @@ Set nproc_per_node to number of GPUs
 
 ```shell
 source .venv/bin/activate # activate venv (unless you already have)
-# train and then remove pod
-torchrun --standalone --nproc_per_node=2 train_gpt2.py && runpodctl remove pod $RUNPOD_POD_ID
+
+# train in the background so you can logout 
+# and then remove pod after training to save money
+nohup bash -c "(torchrun --standalone --nproc_per_node=2 train_gpt2.py | tee logs/out.log); runpodctl remove pod $RUNPOD_POD_ID" & disown
+exit
 ```
+
+## Generate (TODO)
