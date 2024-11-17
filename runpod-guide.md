@@ -20,11 +20,14 @@
 * Create a pod
 * Make sure to attach your network storage
 * Choose a GPU and count (for non-training prep work 1 is enough)
-* Start pod, SSH into the pod and run commands (keep data in `/workspace`)
+* Start pod
+* SSH into the pod
+* Get you code onto the pod - via e.g. `scp` or `git clone`
+* Run commands (keep data in `/workspace`)
 * Terminate pod to not pay when not using it
 * Starting a new pod with the same network storage should keep your data (python venv and deps, training and eval data)
 
-## Run locally
+## Run locally (optional)
 
 Grab the docker iamge name from your runpod template:
 
@@ -46,7 +49,7 @@ This way you can play around with same environment for free without paying for e
 Startup pod with your network storage, SSH into it then run the following:
 
 ```shell
-scripts/setup-venv.sh # setup python venv
+./setup-venv.sh # setup python venv
 source .venv/bin/activate # activate venv
 pip install -r requirements.txt # install requirements
 ```
@@ -58,7 +61,7 @@ Startup pod with your network storage, SSH into it then run the following:
 ```shell
 source .venv/bin/activate # activate venv (unless you already have)
 python hellaswag.py # get hellaswag eval dataset
-python fineweb.py # get fineweb training dataset ()
+python fineweb.py # get fineweb training dataset
 ```
 
 ## Train (? hours)
@@ -68,5 +71,6 @@ Set nproc_per_node to number of GPUs
 
 ```shell
 source .venv/bin/activate # activate venv (unless you already have)
-torchrun --standalone --nproc_per_node=2 train_gpt2.py
+# train and then remove pod
+torchrun --standalone --nproc_per_node=2 train_gpt2.py && runpodctl remove pod $RUNPOD_POD_ID
 ```

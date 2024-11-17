@@ -517,5 +517,14 @@ for step in range(max_steps):
         with open(log_file, "a") as f:
             f.write(f"{step} train {loss_accum.item():.6f}\n")
 
+checkpoint_path = os.path.join(log_dir, "final_model.pt")
+checkpoint = {
+    'model': raw_model.state_dict(),
+    'config': raw_model.config,
+    'step': max_steps,
+    'val_loss': val_loss_accum.item()
+}
+torch.save(checkpoint, checkpoint_path)
+
 if ddp:
     destroy_process_group()
