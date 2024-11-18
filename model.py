@@ -197,7 +197,7 @@ class GPT(nn.Module):
         optimizer = torch.optim.AdamW(optim_groups, lr=learning_rate, betas=(0.9, 0.95), eps=1e-8, fused=use_fused)
         return optimizer
     
-    def generate(self, input, seed, max_length, num_return_sequences, enc, device = "cpu", device_type = "cpu", ddp_rank = 0):
+    def generate(self, input, seed, max_length, num_return_sequences, enc, device, device_type, ddp_rank = 0):
         self.eval()
         tokens = enc.encode(input)
         tokens = torch.tensor(tokens, dtype=torch.long)
