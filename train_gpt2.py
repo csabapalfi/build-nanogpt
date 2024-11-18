@@ -1,10 +1,14 @@
 import os
 import math
+import sys
 import time
 
+import tiktoken
 import torch
 from torch.nn import functional as F
-import tiktoken
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.distributed import init_process_group, destroy_process_group
+import torch.distributed as dist
 
 from dataloader import DataLoaderLite
 from hellaswag import render_example, iterate_examples, get_most_likely_row
@@ -14,12 +18,7 @@ from model import GPT, GPTConfig
 # simple launch:
 # python train_gpt2.py
 # DDP launch for e.g. 8 GPUs:
-# torchrun --standalone --nproc_per_node=8 train_gpt2.py
-
-# run the training loop
-from torch.distributed import init_process_group, destroy_process_group
-from torch.nn.parallel import DistributedDataParallel as DDP
-import torch.distributed as dist
+# torchrun --standalone --nproc_per_node=8 train_gpt2.py <checkpoint_path>
 
 # set up DDP (distributed data parallel).
 # torchrun command sets the env variables RANK, LOCAL_RANK, and WORLD_SIZE
@@ -73,7 +72,13 @@ val_loader = DataLoaderLite(B=B, T=T, process_rank=ddp_rank, num_processes=ddp_w
 torch.set_float32_matmul_precision('high')
 
 # create model
-model = GPT(GPTConfig(vocab_size=50304))
+checkpoint_path = sys.argv[1]
+epoch = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+
+if checkpoint_path:
+    model, epoch, step, val_loss = GPT.from_checkpoint(checkpoint_path, device)
+else:
+    model = GPT(GPTConfig(vocab_size=50304))
 # model = GPT.from_pretrained("gpt2") # or init from OpenAI GPT-2
 model.to(device)
 use_compile = False # torch.compile interferes with HellaSwag eval and Generation. TODO fix
@@ -86,7 +91,8 @@ raw_model = model.module if ddp else model # always contains the "raw" unwrapped
 max_lr = 6e-4
 min_lr = max_lr * 0.1
 warmup_steps = 715
-max_steps = 19073 # 19,073 steps is ~1 epoch, if data is 10B tokens and batch size 0.5M tokens
+max_steps = 19073 * epoch # 19,073 steps is ~1 epoch, if data is 10B tokens and batch size 0.5M tokens
+
 def get_lr(it):
     # 1) linear warmup for warmup_iters steps
     if it < warmup_steps:
@@ -110,7 +116,7 @@ log_file = os.path.join(log_dir, f"log.txt")
 with open(log_file, "w") as f: # open for writing to clear the file
     pass
 
-for step in range(max_steps):
+for step in range(step, max_steps):
     t0 = time.time()
     last_step = (step == max_steps - 1)
 
@@ -135,17 +141,8 @@ for step in range(max_steps):
             with open(log_file, "a") as f:
                 f.write(f"{step} val {val_loss_accum.item():.4f}\n")
             if step > 0 and (step % 5000 == 0 or last_step):
-                # optionally write model checkpoints
-                checkpoint_path = os.path.join(log_dir, f"model_{step:05d}.pt")
-                checkpoint = {
-                    'model': raw_model.state_dict(),
-                    'config': raw_model.config,
-                    'step': step,
-                    'val_loss': val_loss_accum.item()
-                }
-                # you might also want to add optimizer.state_dict() and
-                # rng seeds etc., if you wanted to more exactly resume training
-                torch.save(checkpoint, checkpoint_path)
+                checkpoint_path = os.path.join(log_dir, f"model_{epoch:02d}_{step:05d}.pt")
+                model.save_checkpoint(epoch, step, val_loss_accum.item(), checkpoint_path)
 
     # once in a while evaluate hellaswag
     if (step % 250 == 0 or last_step) and (not use_compile):

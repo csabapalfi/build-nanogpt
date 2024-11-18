@@ -49,7 +49,7 @@ class MLP(nn.Module):
         x = self.gelu(x)
         x = self.c_proj(x)
         return x
-    
+
 class Block(nn.Module):
 
     def __init__(self, config):
@@ -63,7 +63,7 @@ class Block(nn.Module):
         x = x + self.attn(self.ln_1(x))
         x = x + self.mlp(self.ln_2(x))
         return x
-    
+
 @dataclass
 class GPTConfig:
     block_size: int = 1024 # max sequence length
@@ -172,6 +172,27 @@ class GPT(nn.Module):
 
         return model
 
+    @classmethod
+    def from_checkpoint(self, checkpoint_path, device):
+        checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
+        model = GPT(checkpoint['config'])
+        model.load_state_dict(checkpoint['model'])
+        model.to(device)
+        epoch = checkpoint['epoch'] if 'epoch' in checkpoint else 1
+        return model, epoch, checkpoint['step'], checkpoint['val_loss']
+
+    # you might also want to add optimizer.state_dict() and
+    # rng seeds etc., if you wanted to more exactly resume training
+    def save_checkpoint(self, epoch, step, val_loss, checkpoint_path):
+        checkpoint = {
+            'model': self.state_dict(),
+            'config': self.config,
+            'step': step,
+            'val_loss': val_loss,
+            'epoch': epoch
+        }
+        torch.save(checkpoint, checkpoint_path)
+
     def configure_optimizers(self, weight_decay, learning_rate, device_type, log):
         # start with all of the candidate parameters (that require grad)
         param_dict = {pn: p for pn, p in self.named_parameters()}
@@ -196,7 +217,7 @@ class GPT(nn.Module):
             print(f"using fused AdamW: {use_fused}")
         optimizer = torch.optim.AdamW(optim_groups, lr=learning_rate, betas=(0.9, 0.95), eps=1e-8, fused=use_fused)
         return optimizer
-    
+
     def generate(self, input, seed, max_length, num_return_sequences, enc, device, device_type, ddp_rank = 0):
         self.eval()
         tokens = enc.encode(input)

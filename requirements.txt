@@ -5,3 +5,5 @@ datasets # fineweb
 transformers # hellaswag
 requests # hellaswag
 tqdm # fineweb and hellaswag
+matplotlib
+jupyter

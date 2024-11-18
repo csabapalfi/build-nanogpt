@@ -20,9 +20,7 @@ def main():
     if (checkpoint_path == "gpt2"):
         model = GPT.from_pretrained("gpt2")
     else:
-        checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
-        model = GPT(checkpoint['config'])
-        model.load_state_dict(checkpoint['model'])
+        model = GPT.from_checkpoint(checkpoint_path, device)[0]
 
     model.to(device)
     model.eval()
