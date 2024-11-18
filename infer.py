@@ -1,7 +1,6 @@
 import sys
 import torch
 import tiktoken
-from model import GPT, GPTConfig
 
 enc = tiktoken.get_encoding("gpt2")
 
@@ -16,6 +15,8 @@ def main():
         device = "cuda"
 
     print(f"Using device: {device}")
+
+    from model import GPT, GPTConfig
 
     if (checkpoint_path == "gpt2"):
         model = GPT.from_pretrained("gpt2")
