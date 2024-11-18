@@ -24,8 +24,6 @@ def main():
         model = GPT(checkpoint['config'])
         model.load_state_dict(checkpoint['model'])
 
-
-    device_type = "mps" if device == "mps" else "cuda" if device == "cuda" else "cpu"
     model.to(device)
     model.eval()
 

@@ -122,13 +122,13 @@ The command `runpodctl remove pod $RUNPOD_POD_ID` automates removing your pod e.
 ### <a name='localsamplingfromthemodel'></a>local sampling from the model
 
 * download the checkpoint from your runpod GPU pod (e.g via scp)
-* run `python generate.py <checkpoint_path> <input_text>`
-* you can even compare with real gpt2: `python generate.py gpt2 <input_text>`
+* run `python infer.py <checkpoint_path> <input_text>`
+* you can even compare with real gpt2: `python infer.py gpt2 <input_text>`
 
 This runs pretty fast on a M3 Mac given how 'small' our model is:
 
 ```shell
-time python generate.py log/model_19072.pt "Hello, I'm a language model,"
+time python infer.py log/model_19072.pt "Hello, I'm a language model,"
 Using device: mps
 # skipping output (some warnings and the actual samples)...
 
