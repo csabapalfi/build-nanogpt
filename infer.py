@@ -34,7 +34,7 @@ def main():
         num_return_sequences=4,
         enc=enc,
         device=device,
-        device_type=device_type,
+        device_type= "mps" if device == "mps" else "cuda" if device == "cuda" else "cpu",
         ddp_rank=0
     )
 
