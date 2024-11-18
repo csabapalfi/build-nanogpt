@@ -125,6 +125,18 @@ The command `runpodctl remove pod $RUNPOD_POD_ID` automates removing your pod e.
 * run `python generate.py <checkpoint_path> <input_text>`
 * you can even compare with real gpt2: `python generate.py gpt2 <input_text>`
 
+This runs pretty fast on a M3 Mac given how 'small' our model is:
+
+```shell
+time python generate.py log/model_19072.pt "Hello, I'm a language model,"
+Using device: mps
+# skipping output (some warnings and the actual samples)...
+
+real	0m9.055s
+user	0m6.655s
+sys	0m1.064s
+```
+
 ## <a name='TODO'></a>TODO
 
 ### <a name='resumetraining'></a>resume training
