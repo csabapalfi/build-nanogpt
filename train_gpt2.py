@@ -12,7 +12,6 @@ import torch.distributed as dist
 
 from dataloader import DataLoaderLite
 from hellaswag import render_example, iterate_examples, get_most_likely_row
-from model import GPT, GPTConfig
 
 # -----------------------------------------------------------------------------
 # simple launch:
@@ -50,6 +49,8 @@ else:
 
 # added after video, pytorch can be serious about it's device vs. device_type distinction
 device_type = "cuda" if device.startswith("cuda") else "cpu"
+
+from model import GPT, GPTConfig
 
 torch.manual_seed(1337)
 if torch.cuda.is_available():
