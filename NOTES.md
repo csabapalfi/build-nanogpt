@@ -14,8 +14,8 @@
 	* [local sampling from the model](#localsamplingfromthemodel)
 * [TODO](#TODO)
 	* [resume training](#resumetraining)
-	* [local warning: loading checkpoints with weights_only=False](#localwarning:loadingcheckpointswithweights_onlyFalse)
-	* [local warning: MPS autocast](#localwarning:MPSautocast)
+	* [local warning - loading checkpoints with weights_only=False](#localwarning-loadingcheckpointswithweights_onlyFalse)
+	* [local warning - MPS autocast](#localwarning-MPSautocast)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -142,13 +142,13 @@ sys	0m1.064s
 ### <a name='resumetraining'></a>resume training
 * load checkpoint and continue training
 
-### <a name='localwarning:loadingcheckpointswithweights_onlyFalse'></a>local warning: loading checkpoints with weights_only=False
+### <a name='localwarning-loadingcheckpointswithweights_onlyFalse'></a>local warning - loading checkpoints with weights_only=False
 
 ```
 /Users/csabapalfi/yc/build-nanogpt/generate.py:15: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
 ```
 
-### <a name='localwarning:MPSautocast'></a>local warning: MPS autocast 
+### <a name='localwarning-MPSautocast'></a>local warning - MPS autocast 
 
 We already autocast to bfloat16 but we still get this warning.
 
