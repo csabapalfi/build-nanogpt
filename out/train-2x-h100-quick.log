@@ -1,0 +1,76 @@
+torchrun --standalone --nproc_per_node=2 train_gpt2.py
+W1116 23:02:04.101000 749 torch/distributed/run.py:793] 
+W1116 23:02:04.101000 749 torch/distributed/run.py:793] *****************************************
+W1116 23:02:04.101000 749 torch/distributed/run.py:793] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W1116 23:02:04.101000 749 torch/distributed/run.py:793] *****************************************
+total desired batch size: 524288
+=> calculated gradient accumulation steps: 4
+found 99 shards for split train
+found 1 shards for split val
+num decayed parameter tensors: 50, with 124,354,560 parameters
+num non-decayed parameter tensors: 98, with 121,344 parameters
+using fused AdamW: True
+validation loss: 10.9512
+HellaSwag accuracy: 2492/10042=0.2482
+step     0 | loss: 10.955015 | lr 8.3916e-07 | norm: 15.3416 | dt: 24745.72ms | tok/sec: 21187.02
+step     1 | loss: 10.902691 | lr 1.6783e-06 | norm: 14.8627 | dt: 1224.98ms | tok/sec: 427997.90
+step     2 | loss: 10.803940 | lr 2.5175e-06 | norm: 14.4636 | dt: 1227.39ms | tok/sec: 427155.63
+step     3 | loss: 10.662148 | lr 3.3566e-06 | norm: 12.9313 | dt: 1221.27ms | tok/sec: 429297.34
+step     4 | loss: 10.518568 | lr 4.1958e-06 | norm: 10.5761 | dt: 1229.71ms | tok/sec: 426351.97
+step     5 | loss: 10.376814 | lr 5.0350e-06 | norm: 8.8718 | dt: 1227.29ms | tok/sec: 427192.89
+step     6 | loss: 10.257345 | lr 5.8741e-06 | norm: 7.5759 | dt: 1218.35ms | tok/sec: 430325.95
+step     7 | loss: 10.146854 | lr 6.7133e-06 | norm: 6.4488 | dt: 1229.37ms | tok/sec: 426468.88
+step     8 | loss: 10.035709 | lr 7.5524e-06 | norm: 5.5062 | dt: 1223.74ms | tok/sec: 428431.34
+step     9 | loss: 9.961262 | lr 8.3916e-06 | norm: 4.5938 | dt: 1228.39ms | tok/sec: 426807.84
+step    10 | loss: 9.875700 | lr 9.2308e-06 | norm: 3.8961 | dt: 1227.28ms | tok/sec: 427193.80
+step    11 | loss: 9.828291 | lr 1.0070e-05 | norm: 3.3729 | dt: 1228.45ms | tok/sec: 426787.71
+step    12 | loss: 9.781709 | lr 1.0909e-05 | norm: 2.9920 | dt: 1231.18ms | tok/sec: 425840.74
+step    13 | loss: 9.744394 | lr 1.1748e-05 | norm: 2.7028 | dt: 1230.68ms | tok/sec: 426015.47
+step    14 | loss: 9.685160 | lr 1.2587e-05 | norm: 2.5520 | dt: 1229.86ms | tok/sec: 426299.24
+step    15 | loss: 9.663626 | lr 1.3427e-05 | norm: 2.4617 | dt: 1228.59ms | tok/sec: 426739.34
+step    16 | loss: 9.650553 | lr 1.4266e-05 | norm: 2.3413 | dt: 1230.17ms | tok/sec: 426191.66
+step    17 | loss: 9.627405 | lr 1.5105e-05 | norm: 2.2927 | dt: 1231.16ms | tok/sec: 425848.08
+step    18 | loss: 9.677703 | lr 1.5944e-05 | norm: 2.3021 | dt: 1229.07ms | tok/sec: 426572.38
+step    19 | loss: 9.672377 | lr 1.6783e-05 | norm: 2.4072 | dt: 1230.99ms | tok/sec: 425908.62
+step    20 | loss: 9.571664 | lr 1.7622e-05 | norm: 2.2373 | dt: 1232.30ms | tok/sec: 425454.00
+step    21 | loss: 9.538229 | lr 1.8462e-05 | norm: 2.2882 | dt: 1230.17ms | tok/sec: 426190.09
+step    22 | loss: 9.523114 | lr 1.9301e-05 | norm: 2.2467 | dt: 1232.37ms | tok/sec: 425430.79
+step    23 | loss: 9.511488 | lr 2.0140e-05 | norm: 2.2052 | dt: 1232.13ms | tok/sec: 425514.27
+step    24 | loss: 9.445932 | lr 2.0979e-05 | norm: 2.2071 | dt: 1225.77ms | tok/sec: 427721.68
+step    25 | loss: 9.412045 | lr 2.1818e-05 | norm: 2.1769 | dt: 1233.10ms | tok/sec: 425177.11
+step    26 | loss: 9.396402 | lr 2.2657e-05 | norm: 2.0790 | dt: 1234.92ms | tok/sec: 424552.84
+step    27 | loss: 9.352605 | lr 2.3497e-05 | norm: 2.1192 | dt: 1229.43ms | tok/sec: 426448.87
+step    28 | loss: 9.322968 | lr 2.4336e-05 | norm: 2.1146 | dt: 1240.74ms | tok/sec: 422561.68
+step    29 | loss: 9.273349 | lr 2.5175e-05 | norm: 2.1104 | dt: 1236.59ms | tok/sec: 423979.94
+step    30 | loss: 9.308947 | lr 2.6014e-05 | norm: 2.0543 | dt: 1237.20ms | tok/sec: 423771.43
+step    31 | loss: 9.231657 | lr 2.6853e-05 | norm: 2.0049 | dt: 1234.23ms | tok/sec: 424789.20
+step    32 | loss: 9.209044 | lr 2.7692e-05 | norm: 1.9203 | dt: 1234.30ms | tok/sec: 424766.47
+step    33 | loss: 9.166033 | lr 2.8531e-05 | norm: 2.0071 | dt: 1236.00ms | tok/sec: 424182.60
+step    34 | loss: 9.061154 | lr 2.9371e-05 | norm: 2.2021 | dt: 1229.80ms | tok/sec: 426318.66
+step    35 | loss: 9.071812 | lr 3.0210e-05 | norm: 2.6366 | dt: 1228.28ms | tok/sec: 426847.52
+step    36 | loss: 9.036892 | lr 3.1049e-05 | norm: 2.1025 | dt: 1235.57ms | tok/sec: 424328.62
+step    37 | loss: 8.962667 | lr 3.1888e-05 | norm: 1.9399 | dt: 1236.33ms | tok/sec: 424068.32
+step    38 | loss: 8.944798 | lr 3.2727e-05 | norm: 2.2021 | dt: 1229.83ms | tok/sec: 426309.98
+step    39 | loss: 8.922451 | lr 3.3566e-05 | norm: 1.9500 | dt: 1228.51ms | tok/sec: 426766.67
+step    40 | loss: 8.889437 | lr 3.4406e-05 | norm: 1.8075 | dt: 1230.37ms | tok/sec: 426121.96
+step    41 | loss: 8.815280 | lr 3.5245e-05 | norm: 1.9055 | dt: 1226.97ms | tok/sec: 427303.13
+step    42 | loss: 8.769125 | lr 3.6084e-05 | norm: 2.0261 | dt: 1230.87ms | tok/sec: 425950.77
+step    43 | loss: 8.780270 | lr 3.6923e-05 | norm: 1.8360 | dt: 1229.77ms | tok/sec: 426331.80
+step    44 | loss: 8.731003 | lr 3.7762e-05 | norm: 1.7531 | dt: 1229.42ms | tok/sec: 426450.77
+step    45 | loss: 8.717379 | lr 3.8601e-05 | norm: 1.8589 | dt: 1230.67ms | tok/sec: 426018.85
+step    46 | loss: 8.661546 | lr 3.9441e-05 | norm: 1.7704 | dt: 1231.08ms | tok/sec: 425875.95
+step    47 | loss: 8.670102 | lr 4.0280e-05 | norm: 1.7300 | dt: 1229.63ms | tok/sec: 426378.75
+step    48 | loss: 8.661469 | lr 4.1119e-05 | norm: 1.6721 | dt: 1232.55ms | tok/sec: 425368.50
+step    49 | loss: 8.579159 | lr 4.1958e-05 | norm: 1.7074 | dt: 1229.26ms | tok/sec: 426507.10
+step    50 | loss: 8.583658 | lr 4.2797e-05 | norm: 1.6215 | dt: 1228.95ms | tok/sec: 426614.83
+step    51 | loss: 8.543584 | lr 4.3636e-05 | norm: 1.6140 | dt: 1231.48ms | tok/sec: 425737.85
+step    52 | loss: 8.500832 | lr 4.4476e-05 | norm: 1.6231 | dt: 1231.35ms | tok/sec: 425782.44
+step    53 | loss: 8.451168 | lr 4.5315e-05 | norm: 1.7994 | dt: 1233.86ms | tok/sec: 424916.18
+step    54 | loss: 8.460154 | lr 4.6154e-05 | norm: 1.9408 | dt: 1234.94ms | tok/sec: 424544.57
+step    55 | loss: 8.424740 | lr 4.6993e-05 | norm: 1.6411 | dt: 1226.67ms | tok/sec: 427408.11
+step    56 | loss: 8.374183 | lr 4.7832e-05 | norm: 1.5092 | dt: 1234.54ms | tok/sec: 424681.73
+step    57 | loss: 8.357807 | lr 4.8671e-05 | norm: 1.6314 | dt: 1232.16ms | tok/sec: 425501.75
+step    58 | loss: 8.281538 | lr 4.9510e-05 | norm: 1.8548 | dt: 1229.15ms | tok/sec: 426545.24
+step    59 | loss: 8.245096 | lr 5.0350e-05 | norm: 1.4758 | dt: 1232.07ms | tok/sec: 425534.93
+step    60 | loss: 8.230013 | lr 5.1189e-05 | norm: 1.3842 | dt: 1233.81ms | tok/sec: 424933.18
+step    61 | loss: 8.230367 | lr 5.2028e-05 | norm: 1.4480 | dt: 1227.70ms | tok/sec: 427047.71
