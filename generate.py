@@ -15,13 +15,14 @@ def main():
     elif torch.cuda.is_available():
         device = "cuda"
 
+    print(f"Using device: {device}")
+
     if (checkpoint_path == "gpt2"):
         model = GPT.from_pretrained("gpt2")
     else:
         checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
         model = GPT(checkpoint['config'])
         model.load_state_dict(checkpoint['model'])
-
 
 
     device_type = "mps" if device == "mps" else "cuda" if device == "cuda" else "cpu"
