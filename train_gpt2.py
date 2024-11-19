@@ -58,9 +58,27 @@ if torch.cuda.is_available():
 
 enc = tiktoken.get_encoding("gpt2")
 
+checkpoint_path = sys.argv[1] if len(sys.argv) > 1 else None
+max_epochs = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+
+# train locally with an M3 Macbook Air
+# eval_hellaswag = False
+# total_batch_size = 32768  # Start small, e.g., 2**15 or 32K tokens
+# B = 8 # micro batch size
+# T = 256 # sequence length
+
+# train on runpod with 2x H100 GPUs
+eval_hellaswag = True
 total_batch_size = 524288 # 2**19, ~0.5M, in number of tokens
 B = 64 # micro batch size
 T = 1024 # sequence length
+
+max_lr = 6e-4
+min_lr = max_lr * 0.1
+weight_decay = 0.1
+warmup_steps = 715
+max_steps = 19073 * max_epochs # 19,073 steps is ~1 epoch, if data is 10B tokens and batch size 0.5M tokens
+
 assert total_batch_size % (B * T * ddp_world_size) == 0, "make sure total_batch_size is divisible by B * T * ddp_world_size"
 grad_accum_steps = total_batch_size // (B * T * ddp_world_size)
 if master_process:
@@ -73,17 +91,16 @@ val_loader = DataLoaderLite(B=B, T=T, process_rank=ddp_rank, num_processes=ddp_w
 torch.set_float32_matmul_precision('high')
 
 # create model
-checkpoint_path = sys.argv[1] if len(sys.argv) > 1 else None
-max_epochs = int(sys.argv[2]) if len(sys.argv) > 2 else 1
-
 if checkpoint_path:
     model, epoch, step, val_loss = GPT.from_checkpoint(checkpoint_path, device)
-    print(f"Loaded checkpoint from {checkpoint_path}, epoch {epoch}, step {step}, val_loss {val_loss}")
+    if master_process:
+        print(f"Loaded checkpoint from {checkpoint_path}, epoch {epoch}, step {step}, val_loss {val_loss}")
 else:
     model = GPT(GPTConfig(vocab_size=50304))
     step = 0
     epoch = 1
-    print(f"No checkpoint path provided, initialized new model, epoch {epoch}, step {step}")
+    if master_process:
+        print(f"No checkpoint path provided, initialized new model, epoch {epoch}, step {step}")
 
 model.to(device)
 use_compile = False # torch.compile interferes with HellaSwag eval and Generation. TODO fix
@@ -93,12 +110,8 @@ if ddp:
     model = DDP(model, device_ids=[ddp_local_rank])
 raw_model = model.module if ddp else model # always contains the "raw" unwrapped model
 
-max_lr = 6e-4
-min_lr = max_lr * 0.1
-warmup_steps = 715
-max_steps = 19073 * max_epochs # 19,073 steps is ~1 epoch, if data is 10B tokens and batch size 0.5M tokens
-
-print(f"starting epoch {epoch} from step {step} until {max_steps}")
+if master_process:
+    print(f"starting epoch {epoch} from step {step} until {max_steps}")
 
 def get_lr(it):
     # 1) linear warmup for warmup_iters steps
@@ -114,7 +127,12 @@ def get_lr(it):
     return min_lr + coeff * (max_lr - min_lr)
 
 # optimize!
-optimizer = raw_model.configure_optimizers(weight_decay=0.1, learning_rate=6e-4, device_type=device_type, log=master_process)
+optimizer = raw_model.configure_optimizers(
+    weight_decay=weight_decay,
+    learning_rate=max_lr,
+    device_type=device_type,
+    log=master_process
+)
 
 checkpoint_dir = "checkpoints"
 log_dir = "log"
@@ -151,7 +169,7 @@ for step in range(step, max_steps):
                 raw_model.save_checkpoint(epoch, step, val_loss_accum.item(), checkpoint_path)
 
     # once in a while evaluate hellaswag
-    if (step % 250 == 0 or last_step or step == 19080) and (not use_compile):
+    if (step % 250 == 0 or last_step or step == 19080) and (not use_compile) and eval_hellaswag:
         num_correct_norm = 0
         num_total = 0
         for i, example in enumerate(iterate_examples("val")):

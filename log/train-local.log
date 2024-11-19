@@ -1,0 +1,21 @@
+ ✗ build-nanogpt master ✗ python train_gpt2.py
+using device: mps
+total desired batch size: 32768
+=> calculated gradient accumulation steps: 16
+found 99 shards for split train
+found 1 shards for split val
+No checkpoint path provided, initialized new model, epoch 1, step 0
+starting epoch 1 from step 0 until 19073
+num decayed parameter tensors: 50, with 124,354,560 parameters
+num non-decayed parameter tensors: 98, with 121,344 parameters
+using fused AdamW: False
+validation loss: 10.9462
+step     0 | loss: 10.952601 | lr 8.3916e-07 | norm: 14.8389 | dt: 40877.42ms | tok/sec: 801.62
+step     1 | loss: 10.902983 | lr 1.6783e-06 | norm: 14.5844 | dt: 25409.03ms | tok/sec: 1289.62
+step     2 | loss: 10.812415 | lr 2.5175e-06 | norm: 14.3157 | dt: 26262.82ms | tok/sec: 1247.70
+step     3 | loss: 10.673607 | lr 3.3566e-06 | norm: 12.9180 | dt: 25808.23ms | tok/sec: 1269.67
+step     4 | loss: 10.510150 | lr 4.1958e-06 | norm: 12.2546 | dt: 25050.66ms | tok/sec: 1308.07
+^CTraceback (most recent call last):
+  File "/Users/csabapalfi/yc/build-nanogpt/train_gpt2.py", line 217, in <module>
+    x, y = x.to(device), y.to(device)
+KeyboardInterrupt

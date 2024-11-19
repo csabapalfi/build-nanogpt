@@ -1,0 +1,26 @@
+using device: mps
+total desired batch size: 524288
+=> calculated gradient accumulation steps: 8
+found 99 shards for split train
+found 1 shards for split val
+No checkpoint path provided, initialized new model, epoch 1, step 0
+starting epoch 1 from step 0 until 19073
+num decayed parameter tensors: 50, with 124,354,560 parameters
+num non-decayed parameter tensors: 98, with 121,344 parameters
+using fused AdamW: False
+Traceback (most recent call last):
+  File "/Users/csabapalfi/yc/build-nanogpt/train_gpt2.py", line 140, in <module>
+    logits, loss = model(x, y)
+  File "/Users/csabapalfi/yc/build-nanogpt/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/csabapalfi/yc/build-nanogpt/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/csabapalfi/yc/build-nanogpt/model.py", line 120, in forward
+    logits = self.lm_head(x) # (B, T, vocab_size)
+  File "/Users/csabapalfi/yc/build-nanogpt/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/csabapalfi/yc/build-nanogpt/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/csabapalfi/yc/build-nanogpt/.venv/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: Invalid buffer size: 12.28 GB

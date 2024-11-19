@@ -6,3 +6,4 @@ hellaswag/
 input.txt
 
 checkpoints/*.pt
+log/log.txt
