@@ -128,7 +128,7 @@ exit # you can logout and your training will continue in the background then rem
 
 ### <a name='plotlossnormandlearningrate'></a>plot loss, norm and learning rate
 
-see `plots.ipynb`.
+* see [./plots.ipynb](./plots.ipynb) for loss, norm and learning rate plots
 
 ## <a name='neattricks'></a>neat tricks
 
