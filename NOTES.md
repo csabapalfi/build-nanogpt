@@ -15,6 +15,7 @@
 	* [autokill your pod when training is done](#autokillyourpodwhentrainingisdone)
 	* [local sampling from the model](#localsamplingfromthemodel)
 	* [use vscode via remote ssh](#usevscodeviaremotessh)
+	* [debug cuda errors](#debugcudaerrors)
 * [TODO](#TODO)
 	* [smarter epoch handling and resume training](#smarterepochhandlingandresumetraining)
 	* [warning - loading checkpoints with weights_only=False](#warning-loadingcheckpointswithweights_onlyFalse)
@@ -153,6 +154,14 @@ sys	0m1.064s
 ### <a name='usevscodeviaremotessh'></a>use vscode via remote ssh
 
 * just like Andrej
+* Install [Remote - SSH from VS Marketplace](https://marketplace.cursorapi.com/items?itemName=ms-vscode-remote.remote-ssh)
+* Open vscode, go to `Remote-SSH: Connect to Host...` and add the ssh command for your runpod
+* Open folder `/workspace`
+
+### <a name='debugcudaerrors'></a>debug cuda errors
+
+* I've run into some when trying a different GPU
+* check you versions via some scripts I added `cuda/test.sh` and `cuda/test.py`
 
 ## <a name='TODO'></a>TODO
 
