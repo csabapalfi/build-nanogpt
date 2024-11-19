@@ -74,13 +74,17 @@ torch.set_float32_matmul_precision('high')
 
 # create model
 checkpoint_path = sys.argv[1]
-epoch = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+max_epochs = int(sys.argv[2]) if len(sys.argv) > 2 else 1
 
 if checkpoint_path:
     model, epoch, step, val_loss = GPT.from_checkpoint(checkpoint_path, device)
+    print(f"Loaded checkpoint from {checkpoint_path}, epoch {epoch}, step {step}, val_loss {val_loss}")
 else:
     model = GPT(GPTConfig(vocab_size=50304))
-# model = GPT.from_pretrained("gpt2") # or init from OpenAI GPT-2
+    step = 0
+    epoch = 1
+    print(f"No checkpoint path provided, initialized new model, epoch {epoch}, step {step}")
+
 model.to(device)
 use_compile = False # torch.compile interferes with HellaSwag eval and Generation. TODO fix
 if use_compile:
@@ -92,7 +96,9 @@ raw_model = model.module if ddp else model # always contains the "raw" unwrapped
 max_lr = 6e-4
 min_lr = max_lr * 0.1
 warmup_steps = 715
-max_steps = 19073 * epoch # 19,073 steps is ~1 epoch, if data is 10B tokens and batch size 0.5M tokens
+max_steps = 19073 * max_epochs # 19,073 steps is ~1 epoch, if data is 10B tokens and batch size 0.5M tokens
+
+print(f"starting epoch {epoch} from step {step} until {max_steps}")
 
 def get_lr(it):
     # 1) linear warmup for warmup_iters steps
@@ -122,7 +128,7 @@ for step in range(step, max_steps):
     last_step = (step == max_steps - 1)
 
     # once in a while evaluate our validation loss
-    if step % 250 == 0 or last_step:
+    if step % 250 == 0 or last_step or step == 19080:
         model.eval()
         val_loader.reset()
         with torch.no_grad():
@@ -141,12 +147,12 @@ for step in range(step, max_steps):
             print(f"validation loss: {val_loss_accum.item():.4f}")
             with open(log_file, "a") as f:
                 f.write(f"{step} val {val_loss_accum.item():.4f}\n")
-            if step > 0 and (step % 5000 == 0 or last_step):
+            if step > 0 and (step % 5000 == 0 or last_step): # debug checkpoint at 10 steps
                 checkpoint_path = os.path.join(log_dir, f"model_{epoch:02d}_{step:05d}.pt")
-                model.save_checkpoint(epoch, step, val_loss_accum.item(), checkpoint_path)
+                raw_model.save_checkpoint(epoch, step, val_loss_accum.item(), checkpoint_path)
 
     # once in a while evaluate hellaswag
-    if (step % 250 == 0 or last_step) and (not use_compile):
+    if (step % 250 == 0 or last_step or step == 19080) and (not use_compile):
         num_correct_norm = 0
         num_total = 0
         for i, example in enumerate(iterate_examples("val")):
@@ -179,9 +185,9 @@ for step in range(step, max_steps):
                 f.write(f"{step} hella {acc_norm:.4f}\n")
 
     # once in a while generate from the model (except step 0, which is noise)
-    if ((step > 0 and step % 250 == 0) or last_step) and (not use_compile):
+    if ((step > 0 and step % 250 == 0) or last_step or step == 19080) and (not use_compile):
         model.eval()
-        model.generate(
+        raw_model.generate(
             input="Hello, I'm a language model,",
             seed=42,
             max_length=32,
