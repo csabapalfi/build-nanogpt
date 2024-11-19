@@ -73,7 +73,7 @@ val_loader = DataLoaderLite(B=B, T=T, process_rank=ddp_rank, num_processes=ddp_w
 torch.set_float32_matmul_precision('high')
 
 # create model
-checkpoint_path = sys.argv[1]
+checkpoint_path = sys.argv[1] if len(sys.argv) > 1 else None
 max_epochs = int(sys.argv[2]) if len(sys.argv) > 2 else 1
 
 if checkpoint_path:

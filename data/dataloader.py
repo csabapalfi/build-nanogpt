@@ -2,6 +2,8 @@ import os
 import numpy as np
 import torch
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
 def load_tokens(filename):
     npt = np.load(filename)
     npt = npt.astype(np.int32) # added after video
@@ -17,7 +19,7 @@ class DataLoaderLite:
         assert split in {'train', 'val'}
 
         # get the shard filenames
-        data_root = "edu_fineweb10B"
+        data_root = os.path.join(current_directory, "edu_fineweb10B")
         shards = os.listdir(data_root)
         shards = [s for s in shards if split in s]
         shards = sorted(shards)
