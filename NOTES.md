@@ -7,15 +7,17 @@
 * [train your model](#trainyourmodel)
 	* [setup dependendcies (10-20mins)](#setupdependendcies10-20mins)
 	* [get training and validation datasets (40-50 mins)](#gettrainingandvalidationdatasets40-50mins)
-	* [train (4-5 hours with 2 H100s)](#train4-5hourswith2H100s)
+	* [train epoch 1 (4-5 hours with 2 H100s)](#trainepoch14-5hourswith2H100s)
+	* [train epoch 2 (4-5 hours with 1 H100)](#trainepoch24-5hourswith1H100)
+	* [plot loss, norm and learning rate](#plotlossnormandlearningrate)
 * [neat tricks](#neattricks)
 	* [local prep with a runpod docker image](#localprepwitharunpoddockerimage)
 	* [autokill your pod when training is done](#autokillyourpodwhentrainingisdone)
 	* [local sampling from the model](#localsamplingfromthemodel)
 * [TODO](#TODO)
-	* [resume training](#resumetraining)
-	* [local warning - loading checkpoints with weights_only=False](#localwarning-loadingcheckpointswithweights_onlyFalse)
-	* [local warning - MPS autocast](#localwarning-MPSautocast)
+	* [smarter epoch handling and resume training](#smarterepochhandlingandresumetraining)
+	* [warning - loading checkpoints with weights_only=False](#warning-loadingcheckpointswithweights_onlyFalse)
+	* [MPS autocast warning on local Mac](#MPSautocastwarningonlocalMac)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -79,7 +81,7 @@ python hellaswag.py # get hellaswag eval dataset
 python fineweb.py # get fineweb training dataset
 ```
 
-### <a name='train4-5hourswith2H100s'></a>train (4-5 hours with 2 H100s)
+### <a name='trainepoch14-5hourswith2H100s'></a>train epoch 1 (4-5 hours with 2 H100s)
 
 Start up pod with network storage and as many GPUs as deep your pockets are.
 Set nproc_per_node to number of GPUs
@@ -89,6 +91,16 @@ source .venv/bin/activate # activate venv (unless you already have)
 ./train.sh
 exit # you can logout and your training will continue in the background then remove pod after training to save money
 ```
+
+### <a name='trainepoch24-5hourswith1H100'></a>train epoch 2 (4-5 hours with 1 H100)
+
+```shell
+./train.sh model_19072.pt 2
+```
+
+### <a name='plotlossnormandlearningrate'></a>plot loss, norm and learning rate
+
+see `plots.ipynb`.
 
 ## <a name='neattricks'></a>neat tricks
 
@@ -139,16 +151,17 @@ sys	0m1.064s
 
 ## <a name='TODO'></a>TODO
 
-### <a name='resumetraining'></a>resume training
-* load checkpoint and continue training
+### <a name='smarterepochhandlingandresumetraining'></a>smarter epoch handling and resume training
+* currently it's a bit hacky to resume training and it only supports full epochs
+* learning rate scheduling was not adjusted to epochs
 
-### <a name='localwarning-loadingcheckpointswithweights_onlyFalse'></a>local warning - loading checkpoints with weights_only=False
+### <a name='warning-loadingcheckpointswithweights_onlyFalse'></a>warning - loading checkpoints with weights_only=False
 
 ```
 /Users/csabapalfi/yc/build-nanogpt/generate.py:15: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
 ```
 
-### <a name='localwarning-MPSautocast'></a>local warning - MPS autocast 
+### <a name='MPSautocastwarningonlocalMac'></a>MPS autocast warning on local Mac
 
 We already autocast to bfloat16 but we still get this warning.
 
