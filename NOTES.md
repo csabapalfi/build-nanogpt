@@ -7,8 +7,8 @@
 * [train your model](#trainyourmodel)
 	* [setup dependendcies (10-20mins)](#setupdependendcies10-20mins)
 	* [get training and validation datasets (40-50 mins)](#gettrainingandvalidationdatasets40-50mins)
-	* [train epoch 1 (4-5 hours with 2 H100s)](#trainepoch14-5hourswith2H100s)
-	* [train epoch 2 (4-5 hours with 1 H100)](#trainepoch24-5hourswith1H100)
+	* [train epoch 1 (4 hours with 2 H100s)](#trainepoch14hourswith2H100s)
+	* [train epoch 2 (4 hours with 2 H100s)](#trainepoch24hourswith2H100s)
 	* [plot loss, norm and learning rate](#plotlossnormandlearningrate)
 * [neat tricks](#neattricks)
 	* [local prep with a runpod docker image](#localprepwitharunpoddockerimage)
@@ -81,7 +81,7 @@ python hellaswag.py # get hellaswag eval dataset
 python fineweb.py # get fineweb training dataset
 ```
 
-### <a name='trainepoch14-5hourswith2H100s'></a>train epoch 1 (4-5 hours with 2 H100s)
+### <a name='trainepoch14hourswith2H100s'></a>train epoch 1 (4 hours with 2 H100s)
 
 Start up pod with network storage and as many GPUs as deep your pockets are.
 Set nproc_per_node to number of GPUs
@@ -92,7 +92,7 @@ source .venv/bin/activate # activate venv (unless you already have)
 exit # you can logout and your training will continue in the background then remove pod after training to save money
 ```
 
-### <a name='trainepoch24-5hourswith1H100'></a>train epoch 2 (4-5 hours with 1 H100)
+### <a name='trainepoch24hourswith2H100s'></a>train epoch 2 (4 hours with 2 H100s)
 
 ```shell
 ./train.sh model_19072.pt 2
