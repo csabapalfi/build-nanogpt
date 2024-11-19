@@ -2,9 +2,8 @@
 
 ## <a name='tldr'></a>tl;dr
 
-### <a name='what'></a>what
-* I trained a GPT2 model for 2 epochs on the fineweb dataset
-* I've used runpod for about $40 per epoch (~)
+* trained a GPT2 model for 2 epochs on the fineweb dataset
+* used runpod for about ~$40 per epoch (2x H100 GPUs and 100GB network storage)
 
 ### <a name='results'></a>results
 
@@ -12,21 +11,21 @@
 * achieved a validation loss of 3.0167 and a hella score of 0.3172
 * shame I forgot to increase the learning rate (like Andrej mentioned)
 
-### <a name='neattricks'></a>neat tricks
+### <a name='lessonslearnt'></a>lessons learnt
 
-* I've tried and the model can be sampled on Apple Silicon Macs via MPS
-* I wrote a script that would automatically terminate the pod after training was done
-* VSCode remote SSH worked like a charm
-
+* VSCode Remote SSH worked like a charm
+* local setup is free and can work for non-GPU prep work and limited debugging
+* tried and the model can be sampled on Apple Silicon Macs via MPS
+* used `runpodctl remove pod` to self-destruct the pod after overnight training to save money
+* cuda/torch version mismatches could easily trip you up, careful with those
 
 ## <a name='contents'></a>contents
 
 <!-- vscode-markdown-toc -->
 - [Field Notes](#field-notes)
 	- [tl;dr](#tldr)
-		- [what](#what)
 		- [results](#results)
-		- [neat tricks](#neat-tricks)
+		- [lessons learnt](#lessons-learnt)
 	- [contents](#contents)
 	- [runpod](#runpod)
 		- [runpod network storage](#runpod-network-storage)
@@ -37,7 +36,7 @@
 		- [train epoch 1 (4 hours with 2 H100s)](#train-epoch-1-4-hours-with-2-h100s)
 		- [train epoch 2 (4 hours with 2 H100s)](#train-epoch-2-4-hours-with-2-h100s)
 		- [plot loss, norm and learning rate](#plot-loss-norm-and-learning-rate)
-	- [neat tricks](#neat-tricks-1)
+	- [neat tricks](#neat-tricks)
 		- [local prep with a runpod docker image](#local-prep-with-a-runpod-docker-image)
 		- [autokill your pod when training is done](#autokill-your-pod-when-training-is-done)
 		- [local sampling from the model](#local-sampling-from-the-model)
@@ -131,7 +130,7 @@ exit # you can logout and your training will continue in the background then rem
 
 see `plots.ipynb`.
 
-## <a name='neattricks-1'></a>neat tricks
+## <a name='neattricks'></a>neat tricks
 
 ### <a name='localprepwitharunpoddockerimage'></a>local prep with a runpod docker image
 
