@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 start_time=$(date +'%Y-%m-%d-%H-%M-%S')
-log_file="out/${start_time}.log"
+log_file="log/${start_time}.log"
 checkpoint_path=$1
 max_epochs=$2
 

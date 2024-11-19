@@ -117,6 +117,8 @@ def get_lr(it):
 optimizer = raw_model.configure_optimizers(weight_decay=0.1, learning_rate=6e-4, device_type=device_type, log=master_process)
 
 # create the log directory we will write checkpoints to and log to
+checkpoint_dir = "checkpoints"
+os.makedirs(checkpoint_dir, exist_ok=True)
 log_dir = "log"
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, f"log.txt")
@@ -148,7 +150,7 @@ for step in range(step, max_steps):
             with open(log_file, "a") as f:
                 f.write(f"{step} val {val_loss_accum.item():.4f}\n")
             if step > 0 and (step % 5000 == 0 or last_step): # debug checkpoint at 10 steps
-                checkpoint_path = os.path.join(log_dir, f"model_{epoch:02d}_{step:05d}.pt")
+                checkpoint_path = os.path.join(checkpoint_dir, f"model_{epoch:02d}_{step:05d}.pt")
                 raw_model.save_checkpoint(epoch, step, val_loss_accum.item(), checkpoint_path)
 
     # once in a while evaluate hellaswag

@@ -3,5 +3,6 @@ __pycache__/
 
 edu_fineweb10B/
 hellaswag/
+input.txt
 
-log/
+checkpoints/

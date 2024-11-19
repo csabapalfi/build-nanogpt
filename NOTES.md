@@ -1,5 +1,16 @@
 # Field Notes
 
+
+
+## tl;dr
+
+* I trained a GPT2 model for 2 epochs on the fineweb dataset
+* I've used runpod for about $40 per epoch (~)
+* see [./plots.ipynb](./plots.ipynb) for loss, norm and learning rate plots
+
+
+## Contents
+
 <!-- vscode-markdown-toc -->
 * [runpod](#runpod)
 	* [runpod network storage](#runpodnetworkstorage)
@@ -142,7 +153,7 @@ The command `runpodctl remove pod $RUNPOD_POD_ID` automates removing your pod e.
 This runs pretty fast on a M3 Mac given how 'small' our model is:
 
 ```shell
-time python infer.py log/model_19072.pt "Hello, I'm a language model,"
+time python infer.py checkpoints/model_19072.pt "Hello, I'm a language model,"
 Using device: mps
 # skipping output (some warnings and the actual samples)...
 
