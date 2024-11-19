@@ -1,36 +1,52 @@
 # Field Notes
 
+## <a name='tldr'></a>tl;dr
 
-
-## tl;dr
-
+### <a name='what'></a>what
 * I trained a GPT2 model for 2 epochs on the fineweb dataset
 * I've used runpod for about $40 per epoch (~)
+
+### <a name='results'></a>results
+
 * see [./plots.ipynb](./plots.ipynb) for loss, norm and learning rate plots
+* achieved a validation loss of 3.0167 and a hella score of 0.3172
+* shame I forgot to increase the learning rate (like Andrej mentioned)
+
+### <a name='neattricks'></a>neat tricks
+
+* I've tried and the model can be sampled on Apple Silicon Macs via MPS
+* I wrote a script that would automatically terminate the pod after training was done
+* VSCode remote SSH worked like a charm
 
 
-## Contents
+## <a name='contents'></a>contents
 
 <!-- vscode-markdown-toc -->
-* [runpod](#runpod)
-	* [runpod network storage](#runpodnetworkstorage)
-	* [create and run a pod](#createandrunapod)
-* [train your model](#trainyourmodel)
-	* [setup dependendcies (10-20mins)](#setupdependendcies10-20mins)
-	* [get training and validation datasets (40-50 mins)](#gettrainingandvalidationdatasets40-50mins)
-	* [train epoch 1 (4 hours with 2 H100s)](#trainepoch14hourswith2H100s)
-	* [train epoch 2 (4 hours with 2 H100s)](#trainepoch24hourswith2H100s)
-	* [plot loss, norm and learning rate](#plotlossnormandlearningrate)
-* [neat tricks](#neattricks)
-	* [local prep with a runpod docker image](#localprepwitharunpoddockerimage)
-	* [autokill your pod when training is done](#autokillyourpodwhentrainingisdone)
-	* [local sampling from the model](#localsamplingfromthemodel)
-	* [use vscode via remote ssh](#usevscodeviaremotessh)
-	* [debug cuda errors](#debugcudaerrors)
-* [TODO](#TODO)
-	* [smarter epoch handling and resume training](#smarterepochhandlingandresumetraining)
-	* [warning - loading checkpoints with weights_only=False](#warning-loadingcheckpointswithweights_onlyFalse)
-	* [MPS autocast warning on local Mac](#MPSautocastwarningonlocalMac)
+- [Field Notes](#field-notes)
+	- [tl;dr](#tldr)
+		- [what](#what)
+		- [results](#results)
+		- [neat tricks](#neat-tricks)
+	- [contents](#contents)
+	- [runpod](#runpod)
+		- [runpod network storage](#runpod-network-storage)
+		- [create and run a pod](#create-and-run-a-pod)
+	- [train your model](#train-your-model)
+		- [setup dependendcies (10-20mins)](#setup-dependendcies-10-20mins)
+		- [get training and validation datasets (40-50 mins)](#get-training-and-validation-datasets-40-50-mins)
+		- [train epoch 1 (4 hours with 2 H100s)](#train-epoch-1-4-hours-with-2-h100s)
+		- [train epoch 2 (4 hours with 2 H100s)](#train-epoch-2-4-hours-with-2-h100s)
+		- [plot loss, norm and learning rate](#plot-loss-norm-and-learning-rate)
+	- [neat tricks](#neat-tricks-1)
+		- [local prep with a runpod docker image](#local-prep-with-a-runpod-docker-image)
+		- [autokill your pod when training is done](#autokill-your-pod-when-training-is-done)
+		- [local sampling from the model](#local-sampling-from-the-model)
+		- [use vscode via remote ssh](#use-vscode-via-remote-ssh)
+		- [debug cuda errors](#debug-cuda-errors)
+	- [TODO](#todo)
+		- [smarter epoch handling and resume training](#smarter-epoch-handling-and-resume-training)
+		- [warning - loading checkpoints with weights\_only=False](#warning---loading-checkpoints-with-weights_onlyfalse)
+		- [MPS autocast warning on local Mac](#mps-autocast-warning-on-local-mac)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -115,7 +131,7 @@ exit # you can logout and your training will continue in the background then rem
 
 see `plots.ipynb`.
 
-## <a name='neattricks'></a>neat tricks
+## <a name='neattricks-1'></a>neat tricks
 
 ### <a name='localprepwitharunpoddockerimage'></a>local prep with a runpod docker image
 
