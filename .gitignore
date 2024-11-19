@@ -5,4 +5,4 @@ edu_fineweb10B/
 hellaswag/
 input.txt
 
-checkpoints/
+checkpoints/*.pt

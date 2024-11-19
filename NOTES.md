@@ -7,7 +7,7 @@
 
 ### <a name='results'></a>results
 
-* see [./plots.ipynb](./plots.ipynb) for loss, norm and learning rate plots
+* see [notebooks/plots.ipynb](notebooks/plots.ipynb) for loss, norm and learning rate plots
 * achieved a validation loss of 3.0167 and a hella score of 0.3172
 * shame I forgot to increase the learning rate (like Andrej mentioned)
 
@@ -105,8 +105,8 @@ Startup pod with your network storage, SSH into it then run the following:
 
 ```shell
 source .venv/bin/activate # activate venv (unless you already have)
-python hellaswag.py # get hellaswag eval dataset
-python fineweb.py # get fineweb training dataset
+python data/hellaswag.py # get hellaswag eval dataset
+python data/fineweb.py # get fineweb training dataset
 ```
 
 ### <a name='trainepoch14hourswith2H100s'></a>train epoch 1 (4 hours with 2 H100s)
@@ -128,7 +128,7 @@ exit # you can logout and your training will continue in the background then rem
 
 ### <a name='plotlossnormandlearningrate'></a>plot loss, norm and learning rate
 
-* see [./plots.ipynb](./plots.ipynb) for loss, norm and learning rate plots
+* see [notebooks/plots.ipynb](notebooks/plots.ipynb) for loss, norm and learning rate plots
 
 ## <a name='neattricks'></a>neat tricks
 

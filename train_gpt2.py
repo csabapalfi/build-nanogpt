@@ -10,8 +10,8 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
 import torch.distributed as dist
 
-from dataloader import DataLoaderLite
-from hellaswag import render_example, iterate_examples, get_most_likely_row
+from data.dataloader import DataLoaderLite
+from data.hellaswag import render_example, iterate_examples, get_most_likely_row
 
 # -----------------------------------------------------------------------------
 # simple launch:
@@ -116,11 +116,8 @@ def get_lr(it):
 # optimize!
 optimizer = raw_model.configure_optimizers(weight_decay=0.1, learning_rate=6e-4, device_type=device_type, log=master_process)
 
-# create the log directory we will write checkpoints to and log to
 checkpoint_dir = "checkpoints"
-os.makedirs(checkpoint_dir, exist_ok=True)
 log_dir = "log"
-os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, f"log.txt")
 with open(log_file, "w") as f: # open for writing to clear the file
     pass
