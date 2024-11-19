@@ -14,6 +14,7 @@
 	* [local prep with a runpod docker image](#localprepwitharunpoddockerimage)
 	* [autokill your pod when training is done](#autokillyourpodwhentrainingisdone)
 	* [local sampling from the model](#localsamplingfromthemodel)
+	* [use vscode via remote ssh](#usevscodeviaremotessh)
 * [TODO](#TODO)
 	* [smarter epoch handling and resume training](#smarterepochhandlingandresumetraining)
 	* [warning - loading checkpoints with weights_only=False](#warning-loadingcheckpointswithweights_onlyFalse)
@@ -149,7 +150,7 @@ user	0m6.655s
 sys	0m1.064s
 ```
 
-### use vscode via remote ssh
+### <a name='usevscodeviaremotessh'></a>use vscode via remote ssh
 
 * just like Andrej
 

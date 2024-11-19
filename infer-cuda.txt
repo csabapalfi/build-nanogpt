@@ -1,0 +1,21 @@
+root@1fbba0dbac82:/workspace# source .venv/bin/activate
+(.venv) root@1fbba0dbac82:/workspace# python infer.py log/model_01_38145.pt "Hello, I am a language model"
+Using device: cuda
+/workspace/model.py:177: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
+rank 0 sample 0: Hello, I am a language modeler. You are the first thing and are probably the most important role right now. If you need help with your own language
+rank 0 sample 1: Hello, I am a language modeler that comes from an excellent background of programming languages because as I was designing and creating the course I’ve been studying
+rank 0 sample 2: Hello, I am a language modeler. We use Language Models to build language applications. We’re using Python for this.
+I am always looking
+rank 0 sample 3: Hello, I am a language modeler because I want to learn a language, if I can understand one I am done. You are all set for English,
+(.venv) root@1fbba0dbac82:/workspace# python infer.py log/model_01_38145.pt "Hello, I am a language model,"
+Using device: cuda
+/workspace/model.py:177: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(checkpoint_path, map_location=torch.device(device))
+rank 0 sample 0: Hello, I am a language model, and I would like you to write the project yourself. Why? Is it just a way to write code in a new
+rank 0 sample 1: Hello, I am a language model, so we are going to work with code. We also create an interpreter for this language and we are going to create a
+rank 0 sample 2: Hello, I am a language model, so I like to get in touch with the way languages work (which is a pretty cool thing to do).
+To
+rank 0 sample 3: Hello, I am a language model, you want to learn how to do it? ...
+- (5) I teach an introduction to grammar.
+[
