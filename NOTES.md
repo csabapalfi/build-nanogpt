@@ -152,8 +152,12 @@ sys	0m1.064s
 ## <a name='TODO'></a>TODO
 
 ### <a name='smarterepochhandlingandresumetraining'></a>smarter epoch handling and resume training
+
 * currently it's a bit hacky to resume training and it only supports full epochs
 * learning rate scheduling was not adjusted to epochs
+* checkpointing should also save optimizer.state_dict() and rng seeds etc. if you want to more exactly resume training
+* permutate training data more at the start of each epoch
+* increased learning rate mentioned by Andrej
 
 ### <a name='warning-loadingcheckpointswithweights_onlyFalse'></a>warning - loading checkpoints with weights_only=False
 
