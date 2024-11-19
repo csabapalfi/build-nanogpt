@@ -52,7 +52,7 @@
 * Make sure to attach your network storage
 * Choose a GPU and count (for non-training prep work 1 is enough [1])
 * Start pod and SSH into it
-* Get you code onto the pod - via e.g. `scp` or `git clone`
+* Get you code onto the pod - via e.g. `scp` or `git clone` OR use vscode remote ssh
 * Run commands (keep data in `/workspace`)
 * Terminate pod to not pay when not using it
 * Starting a new pod with the same network storage should keep your data (python venv and deps, training and eval data)
@@ -148,6 +148,10 @@ real	0m9.055s
 user	0m6.655s
 sys	0m1.064s
 ```
+
+### use vscode via remote ssh
+
+* just like Andrej
 
 ## <a name='TODO'></a>TODO
 
